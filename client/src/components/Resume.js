@@ -1,8 +1,18 @@
-const Resume = () => {
+import ErrorPage from "./ErrorPage";
+
+const Resume = ({ result }) => {
+    if (JSON.stringify(result) === "{}") {
+        return <ErrorPage />;
+    }
+
+    const handlePrint = () => alert("Print Successful!");
     return (
-        <div>
-            <span>Resume</span>
-        </div>
+        <>
+            <button onClick={handlePrint}>Print Page</button>
+            <main className="container">
+                <p>Hello!</p>
+            </main>
+        </>
     );
 };
 
