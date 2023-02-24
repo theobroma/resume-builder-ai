@@ -7,6 +7,8 @@ const fs = require("fs");
 const app = express();
 const PORT = 4000;
 
+require("dotenv").config();
+
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
@@ -35,7 +37,7 @@ const upload = multer({
 });
 
 const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: process.env.OPEN_AI_API_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
