@@ -1,32 +1,28 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 import axios from "axios";
 
-import Loading from "./Loading";
-
-const Home = () => {
-    const navigate = useNavigate();
+const Home = ({ setResult }) => {
     const [fullName, setFullName] = useState("");
     const [currentPosition, setCurrentPosition] = useState("");
     const [currentLength, setCurrentLength] = useState(1);
     const [currentTechnologies, setCurrentTechnologies] = useState("");
     const [headshot, setHeadshot] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [companyInfo, setCompanyInfo] = useState([
         { name: "", position: "" },
     ]);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    //👇🏻 updates the state with user's input
     const handleAddCompany = () =>
         setCompanyInfo([...companyInfo, { name: "", position: "" }]);
 
-    //👇🏻 removes a selected item from the list
     const handleRemoveCompany = (index) => {
         const list = [...companyInfo];
         list.splice(index, 1);
         setCompanyInfo(list);
     };
-    //👇🏻 updates an item within the list
     const handleUpdateCompany = (e, index) => {
         const { name, value } = e.target;
         const list = [...companyInfo];
@@ -48,14 +44,13 @@ const Home = () => {
             .post("http://localhost:4000/resume/create", formData, {})
             .then((res) => {
                 if (res.data.message) {
-                    console.log(res.data.data);
+                    setResult(res.data.data);
                     navigate("/resume");
                 }
             })
             .catch((err) => console.error(err));
         setLoading(true);
     };
-    //👇🏻 Renders the Loading component you submit the form
     if (loading) {
         return <Loading />;
     }
@@ -130,7 +125,8 @@ const Home = () => {
                     onChange={(e) => setHeadshot(e.target.files[0])}
                 />
 
-                {/* companies */}
+                <h3>Companies you've worked at</h3>
+
                 {companyInfo.map((company, index) => (
                     <div className="nestedContainer" key={index}>
                         <div className="companies">

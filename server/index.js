@@ -1,15 +1,18 @@
 const { Configuration, OpenAIApi } = require("openai");
 const express = require("express");
-const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const cors = require("cors");
+const fs = require("fs");
 const app = express();
 const PORT = 4000;
 
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use(cors());
-app.use("/uploads", express.static("uploads"));
+
+const generateID = () => Math.random().toString(36).substring(2, 10);
 
 app.get("/api", (req, res) => {
     res.json({
@@ -32,7 +35,7 @@ const upload = multer({
 });
 
 const configuration = new Configuration({
-    apiKey: "<YOUR_API_KEY>",
+    apiKey: "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",
 });
 
 const openai = new OpenAIApi(configuration);
